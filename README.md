@@ -13,6 +13,8 @@ recipes/example.rb:  private_key_path '/tmp/test.wherefor.com.key'
 recipes/example.rb:  certificate_path '/tmp/test.wherefor.com.crt'
 recipes/example.rb:  alt_names ['test2.wherefor.com','test3.wherefor.com']
 resources/certificate.rb:        # "subjectAltName = DNS:test.wherefor.com, DNS:test2.wherefor.com, DNS:test3.wherefor.com, IP Address:127.0.0.1, IP Address:127.0.0.2"
+
+
 the below is our root certificate for validation of the vault SSL endpoint cert
 resources/certificate.rb:      ssl_ca_cert: '/usr/local/share/ca-certificates/pki.wherefor.com.crt'
 
