@@ -3,12 +3,16 @@ file '/tmp/hi' do
   action :nothing
 end
 
-pki_certificate 'test' do
-  common_name 'test.wherefor.com'
-  private_key_path '/tmp/test.wherefor.com.key'
-  certificate_path '/tmp/test.wherefor.com.crt'
-  alt_names ['test2.wherefor.com','test3.wherefor.com']
+vault_certificate 'test.example.com' do
+  certificate_path Dir.tmpdir
+  alt_names ['test2.example.com', 'test3.example.com']
   ip_sans ['127.0.0.1', node['ipaddress']]
-  ttl_days 30
+  ttl_days 90
+  format 'pem_bundle'
+  vault_auth_method 'token'
+  vault_auth_credentials ['3VRLzAKbpU58Wgio1a5K8G1E']
+  vault_client_options('address' => 'http://127.0.0.1:8200')
+  vault_role 'test-intermediate-pki/issue/webserver'
+
   notifies :create, 'file[/tmp/hi]'
 end
