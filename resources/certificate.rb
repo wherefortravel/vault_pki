@@ -1,6 +1,6 @@
 # Work derived from:
 # WhereTo vault_pki  https://github.com/wherefortravel/vault_pki
-# sous-chef vault cookbook secret https://github.com/sous-chefs/vault
+# sous-chef's vault cookbook secret https://github.com/sous-chefs/vault
 
 # rubocop:disable Layout/LeadingCommentSpace, Style/BlockComments
 =begin
@@ -16,7 +16,7 @@ This resource allow to request certificates from a vault server
   - `vault_auth method` is one supported by [Vault::Authenticate](https://www.rubydoc.info/github/hashicorp/vault-ruby/Vault/Authenticate)
   - `vault_auth_credentials` is an array which should match the method parameters of `vault_auth_method`
   - `vault_client_options` is a hash for which keys should be in Vault::Configurable.keys, the token will be set by the auth method and can be avoided
-  - `vaul_role` is the role in the pki backend to which requesting the certificate, must be of the form `<backend>/issue/<role>`
+  - `vault_role` is the role in the pki backend to which requesting the certificate, must be of the form `<backend>/issue/<role>`
 
   You can omit the vault_client_options like address if you want to use the environment variables for vault.
 
@@ -79,6 +79,8 @@ property :vault_client_options, Hash, desired_state: false, default: {}, callbac
   'address should be a valid url' => lambda do |v|
     v.empty? || URI.parse(v['address'])
   end,
+}, coerce: proc { |i|
+  i.map { |k, v| [k.to_sym, v] }.to_h
 }
 property :vault_role, String, default: 'pki/issue/webserver', desired_state: false, callbacks: {
   'must be a issue endpoint' => lambda do |r|
